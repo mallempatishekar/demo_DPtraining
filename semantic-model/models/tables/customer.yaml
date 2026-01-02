@@ -1,0 +1,108 @@
+tables:
+  - name: customer
+    sql: {{ load_sql('customer') }}
+    description: >
+      This table stores core customer demographic and profile attributes.
+      It acts as the customer dimension for analyzing product adoption,
+      demand consistency, and customer contribution to product performance
+      across the portfolio.
+    public: true
+
+    dimensions:
+      - name: customer_id
+        type: number
+        column: customer_id
+        description: "Unique identifier for each customer."
+        primary_key: true
+        public: true
+
+      - name: birth_year
+        type: number
+        column: birth_year
+        description: "Birth year of the customer, used to derive age-based adoption patterns."
+
+      - name: age
+        type: number
+        sql: "EXTRACT(YEAR FROM CURRENT_DATE) - {birth_year}"
+        description: "Derived age of the customer used for demographic analysis."
+
+      - name: education
+        type: string
+        column: education
+        description: "Education level of the customer used to understand product adoption trends."
+
+      - name: marital_status
+        type: string
+        column: marital_status
+        description: "Marital status of the customer for lifestyle-based purchasing analysis."
+
+      - name: income
+        type: number
+        column: income
+        description: "Annual income of the customer used to analyze purchasing capacity."
+
+      - name: income_band
+        type: string
+        sql: >
+          CASE
+            WHEN {income} < 30000 THEN 'Low Income'
+            WHEN {income} BETWEEN 30000 AND 70000 THEN 'Middle Income'
+            ELSE 'High Income'
+          END
+        description: "Derived income band used for product affordability analysis."
+
+      - name: country
+        type: string
+        column: country
+        description: "Country of residence used for geographic product demand analysis."
+
+      - name: customer_profile_type
+        type: string
+        sql: >
+          CASE
+            WHEN {income} > 70000 THEN 'Premium Buyer'
+            WHEN {income} BETWEEN 30000 AND 70000 THEN 'Value Buyer'
+            ELSE 'Budget Buyer'
+          END
+        description: >
+          Customer classification based on income to understand
+          contribution to premium vs value product demand.
+
+    measures:
+      - name: total_customers
+        sql: "COUNT(DISTINCT {customer_id})"
+        type: number
+        description: "Total number of unique customers."
+
+      - name: average_income
+        sql: "AVG({income})"
+        type: number
+        description: "Average customer income across the dataset."
+
+      - name: customer_share
+        sql: "COUNT(DISTINCT {customer_id})"
+        type: number
+        description: >
+          Customer count used as a base measure to calculate
+          product adoption ratios and demand spread.
+
+    segments:
+      - name: high_income_customers
+        sql: "{income} > 70000"
+        description: "C   ustomers with high purchasing power contributing to premium product demand."
+
+      - name: middle_income_customers
+        sql: "{income} BETWEEN 30000 AND 70000"
+        description: "Customers contributing to stable, mid-range product demand."
+
+      - name: low_income_customers
+        sql: "{income} < 30000"
+        description: "Customers primarily contributing to budget product categories."
+
+      - name: country_india
+        sql: country = 'India'
+        description: "Customers based in India for region-specific product demand analysis."
+
+      - name: country_usa
+        sql: country = 'USA'
+        description: "Customers based in the USA for region-specific product demand analysis."
