@@ -1,0 +1,7 @@
+# DataOS infra & secrets
+instance_depot_creation/
+output/
+repo-cred/
+
+# Lens deployment (environment specific)
+semantic-model/lens_deployment.yaml
