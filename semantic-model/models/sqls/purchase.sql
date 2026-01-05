@@ -1,19 +1,19 @@
 SELECT
-    customer_id as p_customer_id,
-    cast(purchase_date as timestamp) as purchase_date,
-    recency as recency_in_days,
-    mntwines,
-    mntmeatproducts,
-    mntfishproducts,
-    mntsweetproducts,
-    mntgoldprods,
-    mntfruits,
+    customer_id AS p_customer_id,
+    CAST(purchase_date AS TIMESTAMP) AS purchase_date,
+    recency AS recency_in_days,
+
     numdealspurchases,
     numwebpurchases,
     numcatalogpurchases,
     numstorepurchases,
-    numwebvisitsmonth,
-    numwebpurchases + numcatalogpurchases + numstorepurchases + numstorepurchases as purchases,
-    (mntwines+mntmeatproducts+mntfishproducts+mntsweetproducts+mntgoldprods+mntfruits) as spend
-FROM
-    icebase.training.purchase_data
+
+    numwebpurchases + numcatalogpurchases + numstorepurchases AS purchases,
+
+    (mntwines
+     + mntmeatproducts
+     + mntfishproducts
+     + mntsweetproducts
+     + mntgoldprods
+     + mntfruits) AS spend
+FROM icebase.training.purchase_data
