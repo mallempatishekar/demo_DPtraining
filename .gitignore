@@ -5,3 +5,4 @@ repo-cred/
 
 # Lens deployment (environment specific)
 semantic-model/lens_deployment.yaml
+deployement
