@@ -1,3 +1,5 @@
+user_groups:
+
   - name: default
     api_scopes:
       - meta
@@ -6,3 +8,5 @@
       - jobs
       - source
     includes: "*"
+
+  
