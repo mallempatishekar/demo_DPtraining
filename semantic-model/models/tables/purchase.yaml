@@ -50,17 +50,17 @@ tables:
         column: numdealspurchases
         description: "Number of purchases made using promotions or deals."
 
-      - name: web_purchases
+      - name: numwebpurchases
         type: number
         column: numwebpurchases
         description: "Purchases made via web channel."
 
-      - name: store_purchases
+      - name: numstorpurchases
         type: number
         column: numstorepurchases
         description: "Purchases made via physical store."
 
-      - name: catalog_purchases
+      - name: numcatalogpurchases
         type: number
         column: numcatalogpurchases
         description: "Purchases made via catalog channel."
