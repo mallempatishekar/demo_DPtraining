@@ -55,7 +55,7 @@ tables:
         column: numwebpurchases
         description: "Purchases made via web channel."
 
-      - name: numstorpurchases
+      - name: numstorepurchases
         type: number
         column: numstorepurchases
         description: "Purchases made via physical store."
@@ -106,19 +106,20 @@ tables:
           used to assess discount dependency.
 
       - name: web_channel_share
-        sql: "SUM({web_purchases}) / NULLIF(SUM({purchases}), 0)"
+        sql: "SUM({numwebpurchases}) / NULLIF(SUM({purchases}), 0)"
         type: number
         description: "Share of purchases coming from the web channel."
 
       - name: store_channel_share
-        sql: "SUM({store_purchases}) / NULLIF(SUM({purchases}), 0)"
+        sql: "SUM({numstorepurchases}) / NULLIF(SUM({purchases}), 0)"
         type: number
         description: "Share of purchases coming from physical stores."
 
       - name: catalog_channel_share
-        sql: "SUM({catalog_purchases}) / NULLIF(SUM({purchases}), 0)"
+        sql: "SUM({numcatalogpurchases}) / NULLIF(SUM({purchases}), 0)"
         type: number
         description: "Share of purchases coming from the catalog channel."
+
 
       - name: demand_consistency_score
         sql: >
