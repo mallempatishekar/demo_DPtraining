@@ -82,9 +82,7 @@ tables:
       - name: customer_share
         sql: "COUNT(DISTINCT {customer_id})"
         type: number
-        description: >
-          Customer count used as a base measure to calculate
-          product adoption ratios and demand spread.
+        description: "Customer count used as a base measure to calculate product adoption ratios and demand spread."
 
     segments:
       - name: high_income_customers
