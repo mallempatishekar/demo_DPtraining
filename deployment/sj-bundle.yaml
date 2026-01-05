@@ -1,0 +1,66 @@
+name: product-demand-stability-bundle
+version: v1beta
+type: bundle
+tags:
+  - dataproduct
+  - product-portfolio
+  - demand-stability
+
+description: >
+  Bundle resource for the Product Demand Stability data product.
+  This bundle deploys the semantic model (Lens) and is designed
+  to be extended with workflows, APIs, and data quality checks.
+layer: "user"
+
+bundle:
+  resources:
+
+    # -------------------------
+    # Lens (Semantic Model)
+    # -------------------------
+    - id: lens
+      file: build/semantic-model/lens_deployment.yaml
+      workspace: public
+
+    # -------------------------
+    # Workflow (Demand Stability)
+    # -------------------------
+    # - id: workflow_product_demand_stability
+    #   file: build/workflows/wf-product-demand-stability.yml
+    #   workspace: public
+
+    # -------------------------
+    # (Optional) Data APIs
+    # -------------------------
+    # - id: api
+    #   file: activation/data-apis/service.yml
+    #   workspace: public
+    #   dependencies:
+    #     - lens
+
+    # -------------------------
+    # (Optional) Filter / Access Policies
+    # -------------------------
+    # - id: filter_policy
+    #   file: policy/filter-policy.yml
+    #   workspace: public
+    #   dependencies:
+    #     - lens
+
+    # -------------------------
+    # (Optional) Data Quality – Inputs
+    # -------------------------
+    # - id: quality_purchase
+    #   file: build/slo/input/purchase.yml
+    #   workspace: public
+
+    # - id: quality_product
+    #   file: build/slo/input/product.yml
+    #   workspace: public
+
+    # -------------------------
+    # (Optional) Data Quality – Outputs
+    # -------------------------
+    # - id: quality_product_demand_stability
+    #   file: build/slo/output/product-demand-stability.yml
+    #   workspace: public
