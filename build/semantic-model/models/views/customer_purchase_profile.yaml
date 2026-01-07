@@ -1,0 +1,36 @@
+views:
+  - name: customer_purchase_profile
+    description: >
+      A simple view combining customer profile information with
+      customer-level purchase behavior such as spend, purchase frequency,
+      recency, and channel usage.
+
+    public: true
+
+    meta:
+      title: Customer Purchase Profile
+      tags:
+        - DPDomain.Marketing
+        - DPTier.Consumer Aligned
+
+    tables:
+      - join_path: purchase
+        prefix: true
+        includes:
+          - p_customer_id
+          - purchase_date
+          - purchases
+          - recency_in_days
+          - numdealspurchases
+          - numwebpurchases
+          - numstorepurchases
+          - numcatalogpurchases
+
+      - join_path: customer
+        prefix: true
+        includes:
+          - birth_year
+          - education
+          - marital_status
+          - income
+          - country
