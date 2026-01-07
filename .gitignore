@@ -5,6 +5,4 @@ repo-cred/
 
 # Lens deployment (environment specific)
 semantic-model/lens_deployment.yaml
-D:\SJ_DP\deployment\sj-bundle.yaml
-D:\SJ_DP\deployment\sj-dp-scanner
-D:\SJ_DP\deployment\sj-dp-spec
+deployment/
