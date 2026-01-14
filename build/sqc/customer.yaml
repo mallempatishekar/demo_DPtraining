@@ -1,0 +1,57 @@
+name: soda-customer-input-qualitysj
+version: v1
+type: workflow
+tags:
+  - workflow
+  - soda-checks
+  - customer-data
+description: Applying basic quality checks for customer input data
+workspace: public
+
+workflow:
+  dag:
+    - name: soda-customer-input-quality
+      spec:
+        stack: soda+python:1.0
+        compute: runnable-default
+
+        resources:
+          requests:
+            cpu: 500m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+
+        logLevel: INFO
+
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:training/customer_data
+              options:
+                engine: minerva
+                clusterName: miniature
+
+              profile:
+                columns:
+                  - include *
+
+              checks:
+
+                # Check 1: Completeness
+                - missing_count(customer_id) = 0:
+                    name: Customer ID should not be missing
+                    attributes:
+                      category: Completeness
+
+                # Check 2: Validity
+                - min(income) >= 0:
+                    name: Customer income should not be negative
+                    attributes:
+                      category: Validity
+                      
+                #check 3:Uniqueness      
+                - duplicate_count(customer_id) = 0:
+                    name:  Customer Id should not be duplicated
+                    attributes:
+                      category: Uniqueness
