@@ -23,7 +23,7 @@ lens:
 
   repo:
     url: https://github.com/mallempatishekar/demo_DPtraining
-    lensBaseDir: demo_DPtraining/semantic-model/models
+    lensBaseDir: demo_DPtraining/build/semantic-model/models
     syncFlags:
       - --ref=main
 
