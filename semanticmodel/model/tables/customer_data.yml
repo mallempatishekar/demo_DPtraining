@@ -1,69 +1,59 @@
 tables:
   - name: customer_data
     sql: {{ load_sql('customer_data') }}
-    description: "The customer_data table stores information about customers, including demographic and socioeconomic data. It provides a comprehensive view of customer characteristics."
+    description: "The customer_data table stores information about customers."
 
     dimensions:
       - name: customer_id
         type: number
         column: customer_id
-        description: "The customer_id column uniquely identifies each customer record."
 
       - name: birth_year
         type: number
         column: birth_year
-        description: "The birth_year column stores the year a customer was born, which can be used for age-based analysis."
 
       - name: education
         type: string
         column: education
-        description: "The education column contains information about a customer's educational background, which can be used to understand their socioeconomic status."
 
       - name: marital_status
         type: string
         column: marital_status
-        description: "The marital_status column indicates a customer's marital status, which can be used for demographic analysis."
 
       - name: income
         type: number
         column: income
-        description: "The income column stores a customer's income level, which can be used for financial and socioeconomic analysis."
 
       - name: country
         type: string
         column: country
-        description: "The country column contains the country where a customer resides, which can be used for geographic analysis."
 
       - name: created_at
         type: time
         column: created_at
-        description: "The created_at column stores the timestamp when a customer record was created, which can be used for tracking and auditing purposes."
 
     measures:
       - name: total_customers
         sql: "COUNT({customer_id})"
         type: count
-        description: "Total number of customers in the database."
 
       - name: unique_countries
         sql: "COUNT(DISTINCT {country})"
         type: count_distinct
-        description: "Number of distinct countries where customers reside."
 
       - name: average_income
         sql: "AVG({income})"
         type: avg
-        description: "Average income of all customers."
 
     segments:
       - name: high_income_customers
-        sql: {income} > 50000
-        description: Customers with an annual income exceeding 50,000.
+        sql: "{income} > 50000"
+        description: "Customers with income > 50k"
 
       - name: married_customers
-        sql: {marital_status} = 'married'
-        description: Customers who are currently married.
+        sql: "{marital_status} = 'married'"
+        description: "Customers who are married"
 
       - name: us_customers
-        sql: {country} = 'US'
-        description: Customers residing in the United States.
+        sql: "{country} = 'US'"
+        description: "Customers from US"
