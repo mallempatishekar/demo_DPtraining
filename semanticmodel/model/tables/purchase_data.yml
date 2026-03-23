@@ -12,6 +12,11 @@ tables:
         sql: "{purchase_data.customer_id} = {customer_data.customer_id}"
 
     dimensions:
+      - name: purchase_pk
+        sql: "CAST({customer_id} AS VARCHAR) || '-' || CAST({purchase_date} AS VARCHAR)"
+        type: string
+        primary_key: true
+
       - name: customer_id
         type: number
         column: customer_id
