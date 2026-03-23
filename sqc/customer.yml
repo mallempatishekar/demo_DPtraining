@@ -1,0 +1,113 @@
+name: soda-customer-quality
+version: v1
+type: workflow
+
+tags:
+  - workflow
+  - soda-checks
+
+description: Applying quality checks for the customer data
+workspace: public
+
+workflow:
+  dag:
+    - name: soda-customer-quality
+      spec:
+        stack: soda+python:1.0
+        compute: runnable-default
+
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 250Mi
+          limits:
+            cpu: 1000m
+            memory: 250Mi
+
+        logLevel: INFO
+
+        stackSpec:
+          inputs:
+            - dataset: dataos://icebase:training/customer_data
+              options:
+                engine: minerva
+                clusterName: miniature
+
+              profile:
+                columns:
+                  - include *
+
+              checks:
+
+                # -------------------------------
+                # SCHEMA CHECK
+                # -------------------------------
+                - schema:
+                    name: Data type of birth_year should be bigint
+                    fail:
+                      when wrong column type:
+                        birth_year: bigint
+                    attributes:
+                      category: Schema
+
+                # -------------------------------
+                # FRESHNESS CHECK
+                # -------------------------------
+                - freshness(created_at) < 7d:
+                    name: Data should be updated within last 7 days
+                    attributes:
+                      category: Freshness
+
+                # -------------------------------
+                # COMPLETENESS CHECKS
+                # -------------------------------
+                - missing_count(customer_id) = 0:
+                    name: Customer ID should not be null
+                    attributes:
+                      category: Completeness
+
+                - missing_count(created_at) = 0:
+                    name: created_at should not be null
+                    attributes:
+                      category: Completeness
+
+                - missing_percent(education) < 5:
+                    name: education should have less than 5 percent missing
+                    attributes:
+                      category: Completeness
+
+                - missing_percent(country) < 5:
+                    name: country should have less than 5 percent missing
+                    attributes:
+                      category: Completeness
+
+                # -------------------------------
+                # UNIQUENESS CHECK
+                # -------------------------------
+                - duplicate_count(customer_id) = 0:
+                    name: Customer ID should be unique
+                    attributes:
+                      category: Uniqueness
+
+                # -------------------------------
+                # VALIDITY CHECKS (FIXED PROPERLY)
+                # -------------------------------
+                - invalid_count(income) = 0:
+                    name: income should be non-negative
+                    valid min: 0
+                    attributes:
+                      category: Validity
+
+                - invalid_count(country) = 0:
+                    name: country should have meaningful values
+                    valid min length: 3
+                    attributes:
+                      category: Validity
+
+                # -------------------------------
+                # ACCURACY CHECK
+                # -------------------------------
+                - avg_length(country) > 2:
+                    name: Average country length should be greater than 2
+                    attributes:
+                      category: Accuracy
