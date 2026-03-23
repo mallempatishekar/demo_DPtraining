@@ -1,0 +1,89 @@
+tables:
+  - name: purchase_data
+    sql: {{ load_sql('purchase_data') }}
+    description: "The purchase_data table stores information about customer purchases, including dates and amounts spent on various products. It can be used to analyze customer buying behavior and preferences."
+
+    joins:
+      - name: customer_data
+        relationship: many_to_one
+        sql: "{purchase_data.customer_id} = {customer_data.customer_id}"
+      - name: customer_data
+        relationship: many_to_one
+        sql: "{purchase_data.customer_id} = {customer_data.customer_id}"
+
+    dimensions:
+      - name: customer_id
+        type: number
+        column: customer_id
+        description: "The customer_id column uniquely identifies each customer record and serves as a primary key for linking purchase data to individual customers."
+
+      - name: purchase_date
+        type: time
+        column: purchase_date
+        description: "The purchase_date column stores the date and time of each purchase, allowing for analysis of purchase frequency and timing."
+
+      - name: recency
+        type: number
+        column: recency
+        description: "The recency column measures the time since a customer's last purchase, which can be used to assess customer engagement and loyalty."
+
+      - name: numdealspurchases
+        type: number
+        column: numdealspurchases
+        description: "The numdealspurchases column tracks the number of purchases made through deals, helping to evaluate the effectiveness of promotional campaigns."
+
+      - name: numwebpurchases
+        type: number
+        column: numwebpurchases
+        description: "The numwebpurchases column counts the number of purchases made online, providing insight into e-commerce activity and customer preferences."
+
+      - name: numcatalogpurchases
+        type: number
+        column: numcatalogpurchases
+        description: "The numcatalogpurchases column records the number of purchases made from catalogs, which can inform strategies for print marketing and product offerings."
+
+      - name: numstorepurchases
+        type: number
+        column: numstorepurchases
+        description: "The numstorepurchases column tallies the number of purchases made in physical stores, allowing for analysis of brick-and-mortar sales performance."
+
+      - name: mntwines
+        type: number
+        column: mntwines
+        description: "The mntwines column measures the amount spent on wine products, which can be used to assess demand for wine and inform inventory management."
+
+      - name: mntmeatproducts
+        type: number
+        column: mntmeatproducts
+        description: "The mntmeatproducts column tracks the amount spent on meat products, providing insight into customer spending habits on meat items."
+
+      - name: mntfishproducts
+        type: number
+        column: mntfishproducts
+        description: "The mntfishproducts column records the amount spent on fish products, helping to evaluate the market for seafood and related products."
+
+      - name: mntsweetproducts
+        type: number
+        column: mntsweetproducts
+        description: "The mntsweetproducts column measures the amount spent on sweet products, which can inform strategies for confectionery and dessert offerings."
+
+      - name: mntgoldprods
+        type: number
+        column: mntgoldprods
+        description: "The mntgoldprods column tracks the amount spent on gold products, although the specific nature of these products is unclear, it can be used to analyze spending on luxury or high-value items."
+
+      - name: mntfruits
+        type: number
+        column: mntfruits
+        description: "The mntfruits column records the amount spent on fruit products, providing insight into customer demand for fresh produce and related items."
+
+    measures:
+      - name: total_spend
+        sql: "SUM({recency})"
+        type: sum
+        description: "total revenue generated from recency"
+
+      - name: total_purchases
+        sql: "SUM({numdealspurchases} + {numwebpurchases} + {numcatalogpurchases} + {numstorepurchases})"
+        type: sum
+        description: "Total number of purchases made across all channels."

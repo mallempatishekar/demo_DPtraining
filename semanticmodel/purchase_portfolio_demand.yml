@@ -1,0 +1,70 @@
+version: v1alpha
+name: "purchase-portfolio-demand"
+layer: user
+type: lens
+owner: mithunakarunanithinirmala
+tags:
+  - lens
+description: Semantic model for the data product.
+lens:
+  compute: runnable-default
+  secrets:
+    - name: git-cred
+      allKeys: true
+  source:
+    type: minerva
+    name: miniature
+    catalog: icebase
+  repo:
+    url: https://github.com/mallempatishekar/demo_DPtraining
+    lensBaseDir: demo_DPtraining/build/semantic-model/models
+    syncFlags:
+      - --ref=main
+
+  api:   # optional
+    replicas: 1 # optional
+    logLevel: info  # optional
+    # envs:
+    #   LENS2_SCHEDULED_REFRESH_TIMEZONES: "UTC,America/Vancouver,America/Toronto"
+    resources: # optional
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 500Mi
+  worker: # optional
+    replicas: 1 # optional
+    logLevel: debug  # optional
+    # envs:
+    #   LENS2_SCHEDULED_REFRESH_TIMEZONES: "UTC,America/Vancouver,America/Toronto"
+    resources: # optional
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 500Mi
+  router: # optional
+    logLevel: info  # optional
+    # envs:
+    #   LENS2_SCHEDULED_REFRESH_TIMEZONES: "UTC,America/Vancouver,America/Toronto"
+    resources: # optional
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 500Mi
+  # iris:
+  #   logLevel: info
+  #   resources:
+  #     requests:
+  #       cpu: 200m
+  #       memory: 256Mi
+  #     limits:
+  #       cpu: 1000m
+  #       memory: 1024Mi
+
+  metric:
+    logLevel: info
